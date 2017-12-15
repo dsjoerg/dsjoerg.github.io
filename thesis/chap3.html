@@ -1,0 +1,125 @@
+<TITLE>Chapter 3: Introduction to Visual Prolog</TITLE>
+
+<H1>Chapter 3: Introduction to Visual Prolog
+</H1>
+
+This chapter introduces the syntax and semantics of Visual Prolog through a series of simple examples, annotated with equivalent Prolog code.  The syntax and semantics of VP are formally defined in Chapter 4.<P>
+
+A clause is a self-contained diagram of Visual Prolog.  There are two types of clauses: facts and rules.  <P>
+
+<A NAME="F" > <H2>Facts
+</H2>
+</A>
+The <I>head</I> of a Visual Prolog clause is drawn as a thick-bordered rectangle, inside of which is drawn the head's name.  The head may have any number of slots, which are positioned on the border of the head.  A <I>fact</I> asserts the truth of a relationship between the values of its slots.  Slots are given value by connecting them to other objects. In the example below, the slot of the head is connected to an atom, a primitive unit of value.  <P>
+
+<IMG SRC="female1.gif"><P>
+<B>Figure 3.1.</B> Corresponding Prolog: <CODE>female(nancy).</CODE><P>
+
+Thus, the fact means that the relation <B>female</B> is true of <B>Nancy</B>.<P>
+<IMG SRC="parent1.gif"><P>
+<B>Figure 3.2.</B> Corresponding Prolog: <CODE>parent(nancy,david).</CODE><P>
+
+This fact means that the relation <B>parent</B> is true between <B>Nancy</B> and <B>David</B>.  Note that the two slots are shaped differently.  In this case, the diamond slot is connected to the parent, and the circle to the child.  The meanings of slot shapes are up to the programmer, but must be consistent among all identically-named instances of the fact with the same number of slots.<P>
+It is useful to be able to aggregate value into <I>lists</I>.  A list is drawn as a horizontal series of squares, each of which may be connected to other objects.  The value of the whole list may be obtained by connecting to the list's <I>list bracket</I>.<P>
+
+
+<IMG SRC="countries1.gif"><P>
+<B>Figure 3.3.</B> <CODE>countries_visited(david,[england, germany, spain]).</CODE><P>
+
+The fact of figure 3.3 asserts that the relation <B>countries visited</B> holds between <B>David</B> and the list <B>England, Germany, Spain</B>.<P>
+It is also useful to be able to aggregate value into <I>structures</I>.  A structure, like a list, is drawn as a horizontal series of squares.  The squares are enclosed in a rectangle, and the name of the structure, its <I>functor</I>, is drawn within.  Generally, each position in a structure has a specific meaning which is up to the programmer.<P>
+<IMG SRC="birthday1.gif"><P>
+<B>Figure 3.4.</B> <CODE>birthday(david,date(2,march,1973)).</CODE><P>
+
+<A NAME="R" > <H2>Rules
+</H2>
+</A>
+The other kind of clause is a <I>rule</I>.  A rule, like a fact, asserts the truth of a relationship between the values of its slots.  The difference is that the truth of a rule may also depend on any number of <I>goals</I>.  A goal is drawn as a rectangle, inside of which is drawn the goal's name.  A goal may have any number of slots positioned its border.  A goal is true if:<P>
+<ul>
+<li>Some clause with the same name and type of slots can be found in the program.
+<li>The relation that the clause describes holds for the values of the goal's slots.
+</ul>
+<IMG SRC="parent2.gif"><P>
+<B>Figure 3.5.</B> <CODE>parent(walter,X) :- parent(nancy,X).</CODE><P>
+
+This rule asserts that <B>Walter</B> is a <B>parent</B> of a person if <B>Nancy</B> is also a  <B>parent</B> of that person.  Notice that it does <I>not</I> say anything about the consequences of <B>Walter</B> being a <B>parent</B> of a person.  It simply specifies that whenever it is true that <B>Nancy</B> is a <B>parent</B> of a person (the goal), it is also true that <B>Walter</B> is a <B>parent</B> of that person (the head).<P>
+
+<IMG SRC="mother1.gif"><P>
+<B>Figure 3.6.</B> <CODE>mother(X,Y) :- female(X), parent(X,Y).</CODE><P>
+
+The rule in figure 3.6 has two goals.  It says that whenever a person who is female is the parent of a child, the female person is also a mother of the child.  Note that a direct connection from the slot of "female" to the diamond slot of "parent" is unneccessary because they are effectively connected through the diamond slot of "mother."<P>
+When clauses become more complicated, it is often impossible to directly connect objects in a visually pleasing way.  In such cases it is appropriate to use a <I>variable</I>.  Variables have no value of their own; they are used only to bring together the values of the objects they are connected to.<P>
+The meaning of a complicated clause may be clarified by the use of <I>labels</I>.  Labels do not affect the meaning of a clause.<P>
+
+<IMG SRC="mother2.gif"><P>
+<B>Figure 3.7.</B> <CODE>mother(Mother, Child) :-	female(Mother), parent(Mother, Child).</CODE><P>
+
+The clause of figure 3.7 is particularly interesting because it is <I>recursive</I> Ð the truth of the <B>parent</B> relation depends on the truth of the <B>parent</B> relation (with different slot values).  Recursive clauses are particularly powerful when they have more than one goal.<P>
+
+<IMG SRC="ancestor1.gif"><P>
+<IMG SRC="ancestor2.gif"><P>
+<B>Figure 3.8.</B> <CODE>ancestor(X,Y) :- parent(X,Y).<P>
+ancestor(X,Y) :- parent(X,Z), ancestor(Z,Y).</CODE><P>
+
+Two clauses are depicted in figure 3.8.  The first says that the <B>ancestor</B> relation holds between two people whenever the <B>parent</B> relation holds.  The second says that, if the <B>ancestor</B> relation holds between an ancestor and a descendant, then the <B>parent</B> of the ancestor is also an <B>ancestor</B> of the descendant.<P>
+
+Recursive relations may be defined on compound data types, such as lists and structures.  For instance, let us consider the relation that holds between a list and a member of the list.  One way to express this relation is as follows.  An element is a <B>member</B> of a list l  <I>if</I>:<P>
+<ul>
+<li>It is the first element of l, <I>or</I>:
+<li>The element is a <B>member</B> of the list l'  that results from removing l's first element.
+</ul>
+
+<IMG SRC="member1.gif"><P>
+<IMG SRC="member2.gif"><P>
+<B>Figure 3.9.</B> <CODE>member(X,[X|_]).  member(X,[_|T]) :- member(X,T).</CODE><P>
+
+Figure 3.9 features a list with a <I>tail</I>.  The tail represents all the elements of the list that are not shown.  So, in the above example, the tail represents the list with the first element removed.<P>
+Often it is necessary to represent a list with no elements.  This is accomplished with the <I>empty-list</I>, which is drawn as a crossed square.  The empty-list is very useful for defining recursive relations on lists.<P>
+
+<IMG SRC="conc1.gif"><P>
+<IMG SRC="conc2.gif"><P>
+<B>Figure 3.10.</B> <CODE>conc([],B,B). conc([A|As],Bs,[A|Rest]) :- conc(As,Bs,Rest).</CODE><P>
+Note that arrow slots are identified by their inward- or outward-pointing direction.<P>
+
+The two clauses of figure 3.10 define the <B>conc</B> relation, which holds between two lists and their concatenation.  The first clause says that an empty list concatenated with a list produces the list.  The second clause says that the result of concatenating two lists is the list that:<P>
+<ul>
+<li>has the first element of the first list as its first element, and
+<li>has as its remainder the result of concatenating the remainder of the first list and the entire second list.
+</ul>
+This method of definition is very common in logic programming.<P>
+
+Occasionally, particularly when defining arithmetic relations,  it will be desired to inject some textual Prolog into a clause.  This is accomplished by means of a <I>formula</I> goal.  Formulas look and act just like ordinary goals, except that their slots are identified by letters rather than shapes.  A one-slot formula's slot will always be labeled "A," a two-slot formula's slots "A" and "B," and so on.  Inside the formula should be a Prolog goal in which the only unbound variables are the ones named by the slots.<P>
+
+<IMG SRC="diff1.gif"><P>
+<IMG SRC="diff2.gif"><P>
+<B>Figure 3.11.</B> <CODE>diff(A,B,C) :- A > B, A is B - C.<P>
+diff(A,B,C) :- A "=<" B, A is C - B.</CODE><P>
+
+<IMG SRC="factorial1.gif"><P>
+<IMG SRC="factorial2.gif"><P>
+<B>Figure 3.12.</B> <CODE>factorial(0,1).<P>
+factorial(F,X) :- 
+F>0, -(F,1,F1), factorial(F1,F1F), *(F,F1F,X).</CODE><P>
+
+As the definition of "factorial" shows, arithmetic clauses need not use formulas, but the use of such does contribute to readability.<P>
+
+<IMG SRC="ancestor1.gif"><P>
+<IMG SRC="ancestor2.gif"><P>
+<B>Figure 3.13.</B> <CODE>ancestor(X,Y) :- parent(X,Y), ancestor(Y,Z).<P>
+ancestor(X,Y) :- parent(X,Y).</CODE><P>
+
+The clauses depicted in figure 3.13 are potentially <I>dangerous</I>.  Ultimately, clauses are interpreted by the computer, which tries to prove the truth of relations specified by the user.  If the user asks the computer to prove the truth of the <B>ancestor</B> relation, the computer proceeds as follows:<P>
+<ol>
+<li>Start with the first clause (the left-hand one).
+<li>Pick a goal in the clause (say, "ancestor")
+<li>Find the first clause that matches the goal "ancestor"
+<li>Pick a goal in the clause (say, "ancestor")
+<li>Find the first clause... etc.
+</ol>
+To prevent this from happening, two things may be done:<P>
+<ul>
+<li>switch the order of the clauses.
+<li>specify that, in the left-hand clause, the "parent" goal is to be attempted before the "ancestor" goal.
+</ul>
+Goals are kept in a partial order Ð for any goal, some goals must be attempted before it, some after it, and for some it doesn't matter.  This order is reflected visually by interactive <I>distortion</I>.  When a clause is being edited in a VP editing program, all the goals in a clause distort to reflect their ordering relation with the currently selected goal.<P>
+

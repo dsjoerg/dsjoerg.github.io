@@ -1,0 +1,73 @@
+<TITLE>Chapter 1: Introduction</TITLE>
+
+<H1>Chapter 1: Introduction
+</H1>
+
+<A NAME="CNL" > <H2>Computers and Logic
+</H2>
+</A>
+A computer is a machine capable of carrying out formal computation.  General-purpose computers hold a representation of the computation to be carried out in their storage.  Ultimately, this computation is represented in a code for which the computer's circuitry has been designed.  This code is incomprehensible to the unaided human.  For this reason, programmers write progams called compilers that convert formal, but human-readable, programs into computer-executable code.  The formalization that describes the structure and meaning of a set of human-readable programs is called a computer language, or simply a language.<P>
+It is no small task to create a useful language.  Of great importance is the semantic model of the language - what are the meanings of the language's simplest components, and how are the meanings of larger components built up from the meaning of smaller components?  In low-level languages, the simplest components bear a close relation to the inner workings of a standard computer.  In higher-level languages, the simplest components are often related to mathematical abstractions, and the composition of these elements corresponds to a formal composition of these abstractions.  Thus is the full power of mathematical reasoning brought to bear upon the task of designing useful computer programs.<P>
+One well-known high-level language is Prolog.  Prolog allows for the specification of statements of Horn logic, a subset of first-order logic.  Here are two statements of Horn logic translated into English:<P>
+
+<B>All men are mortal. (a rule)<P>
+Socrates is a man. (a fact)<P>
+</B>
+Once these assertions have been made, the computer may be asked a question such as:<P>
+<B>Is Socrates mortal?<P>
+</B>And the computer will respond in the positive, based on known rules, facts, and the rules of inference.
+The computer may also be asked:<P>
+<B>Who is mortal?<P>
+</B>
+The computer will use its rules, facts, and inference rules to try to find a proof of the mortality of any individual.  Based on the given rule and fact, it will answer, "Socrates."<P>
+In Prolog, these rules and facts are expressed in a way designed to mirror the logic behind the English sentences:<P>
+<CODE>mortal(X) :- man(X).<P>
+man(socrates).<P>
+</CODE>
+
+The ":-" is to be read as a left-pointing implication arrow, meaning that the truth of the right-hand side of the rule implies the truth of the left-hand side.  The universal quantification of X is also implicit in this rule.  Thus, the rule means that if the relation man is true of any X, then mortal is also true of that X.<P>
+The question we wish to ask is expressed as:<P>
+<CODE>mortal(X).<P>
+</CODE>
+Prolog responds with "<CODE>X = socrates</CODE>."<P>
+
+The simplicity of the example belies the power of Prolog.  Relations of more than one argument may be defined, and the right-side of a rule may contain any number of relations, all of which must be true for the rule to imply the truth of the left-hand side's relation.  This system of rules and facts constitutes Horn logic, the mathematical basis for Prolog.  A surprisingly large number of fields offer problems which may be attacked effectively with Prolog, including genetics, game theory, automated reasoning, theorem proving, and natural language processing.<P>
+Rules and facts in Prolog are textual objects.  This makes sense because Horn logic is written as text which Prolog resembles to a large degree.  More importantly, when Prolog was invented, text was the most advanced way to present human-readable data to a computer.  Computers today can accept many other kinds of input, and it is not clear that, given the choice again, Prolog's designers would have chosen text as the best way to represent the Horn logic upon which Prolog is based.<P>
+Prolog programmers often construct diagrams as a way of working out their ideas before typing them into the computer.  It seems natural to ask, "Why not just give the computer the diagrams?"<P>
+
+<A NAME="VL" > <H2>Visual Languages
+</H2>
+</A>
+
+A lot of work has been done on visually-based langagues [<A HREF = "biblio.html#Chang"> Chang</a>, <A HREF = "biblio.html#Shu">Shu</a>], and very little of it has found its way into the programming mainstream.  There are good reasons for this.  Here are a few:<P>
+<ul>
+<LI>Interface speed.  Programmers are generally fast typists.  Diagram drawing is notoriously slow.<P>
+<LI>Screen space.  Text is compact.  Visual languages surpass their textual counterparts in clarity at the expense of a high consumption of screen space [<A HREF = "biblio.html#Shu">Shu</a>, p. 288].  <P>
+<LI>Spaghetti code.  Most visual languages give the programmer different kinds of objects, and rules for attaching them in different combinations.  If the attachment of objects is represented as a line drawn between them, the readability of visual code plummets as the number of objects and connections increases, as the crossing of unrelated lines becomes inevitable.<P>
+<LI>Limited semantics.  Most textual languages feature a large number of native operations.  Coming up with visual representations for all these operations requires that the visual language designer strike a very delicate balance.  On one extreme, a language has so many symbols that they are as numerous, arbitrary, and varied as the code-words they were meant to replace.  On the other, a language has so few symbols that they have to be employed in enormous, baroque combinations to achieve a nontrivial meaning.<P>
+</ul>
+<A NAME="WVLP" ><H2>Why Visual Logic Programming?
+</H2></A>
+
+These challenges acknowledged, we submit that Horn logic is an excellent candidate for visual representation:<P>
+<ul>
+<LI>Each clause may be represented as a separate diagram.  A single clause is usually simple enough that the resulting diagram is small enough to be easily read and to fit comfortably on part of a standard computer display.<P>
+<LI>Every clause has the same basic structure: a head, and a body that invokes some number of procedures.  Fundamentally, there exists only one operation: the unification of arguments to other arguments, or to parts of simple data structures.<P>
+</ul>
+The pictorial representability of Prolog's semantic domain is explained by Ivan Bratko in his "Prolog: Programming for Artificial Intelligence":<P>
+
+<BLOCKQUOTE>When searching for ideas about a problem, it is often useful to introduce some graphical representation of the problem.  A picture may help us to perceive some essential relations in the problem.  Then we just have to describe what we see in the picture in the programming language.<P>
+The use of pictorial representations is often useful in problem solving in general; it seems, however, that it works with Prolog particularly well.  The following arguments explain why:<P>
+(1)	Prolog is particularly suitable for problems that involve objects and relations between objects.  Often, such problems can be naturally illustrated by graphs in which nodes correspond to objects and arcs correspond to relations.<P>
+(2)	Structured data objects in Prolog are naturally pictured as trees.<P>
+(3)	The declarative meaning of Prolog facilitates the translation of pictorial representations into Prolog because, in principle, the order in which the picture is described does not matter.  We just put what we see into the program in any order.  (For practical reasons of efficiency this order will possibly have to be polished later.) [<A HREF = "biblio.html#Bratko"> Bratko </a>, p. 192]<P>
+</BLOCKQUOTE>
+
+<A NAME="ATT" ><H2>About this Thesis
+</H2></A>
+
+The aim of the research upon which this thesis is based was to develop the best language possible, visual or otherwise, for representing the meaning of Prolog.<P>
+The rest of this thesis discusses Visual Prolog (VP), a visual and interactive language for logic programming that derives its semantics directly from Prolog.  Chapter 2 gives a brief overview of Prolog, motivating the design of VP by way of a critique of the ways in which Prolog represent its semantic domain.<P>
+<A HREF = "chap3.html">Chapter 3</a> gives an example-based introduction to VP.  Chapter 4 defines VP's syntax and semantics.  Chapter 5 gives a user-oriented description of VPEditor, a NeXTstep application for the creation, editing, and execution of VP programs.<P>
+Chapter 6 presents suggested principles of style for VP, drawing examples from two VP programs.  Chapter 7 reviews related research, and explores the possibilty of augmenting the robustness of the VP runtime system by integrating it with an existing debugging environment.  Chapter 8 sums up the work, pointing out deficiencies and directions for further research.<P>
+
